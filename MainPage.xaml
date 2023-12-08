@@ -6,7 +6,7 @@
     <ScrollView>
         <VerticalStackLayout
             Padding="5,0"
-            Spacing="25">
+            Spacing="5">
             <Image
                 Source="dotnet_bot.png"
                 HeightRequest="50"
@@ -14,60 +14,107 @@
                 SemanticProperties.Description="dot net bot in a race car number eight" />
             <BoxView Color="Gray"  HeightRequest="2" HorizontalOptions="Fill" Margin="1" />
             <BoxView Color="Gray"  HeightRequest="2" HorizontalOptions="Fill" Margin="1" />
-            <Button
-                WidthRequest="500"
-                x:Name="CounterBtnMain"
-                Text="Рассчитть ставку" 
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />
+            
+            <StackLayout>
+                <Button
+                    WidthRequest="500"
+                    x:Name="CounterBtnMain"
+                    Text="Рассчитть ставку" 
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    Clicked="OnCounterClicked"
+                    HorizontalOptions="Fill" />
+                <StackLayout Padding="3" HorizontalOptions="Center" Orientation="Horizontal">
+                    <CheckBox x:Name="statusCheckBox" CheckedChanged="OnCheckChange"/>
+                    <Label FontSize="16"  Text="Не округлять" />
+                </StackLayout>
+            </StackLayout>
             
             <StackLayout HorizontalOptions="Center" Orientation="Horizontal" Margin="5,5,5,5">
+                
                 <StackLayout>
                     <Entry WidthRequest="250" Placeholder = "Ставка" FontFamily="Helvetica" Keyboard="Numeric"
-                        FontSize="22" MaxLength ="20" />
+                        FontSize="22" MaxLength ="20" x:Name="Bet"/>
                     <StackLayout Margin="5,5,5,5" Orientation="Horizontal">
-                        <Button WidthRequest="125" Text="-1000"/>
-                        <Button WidthRequest="125" Text="+1000"/>
+                        <Button WidthRequest="125" Text="-1000" Clicked="OnBetMinus1000"/>
+                        <Button WidthRequest="125" Text="+1000" Clicked="OnBetPlus1000"/>
                     </StackLayout>
                     
                 </StackLayout>
 
                 <StackLayout>
                     <Entry WidthRequest="250" Placeholder = "Комиссия" FontFamily="Helvetica" Keyboard="Numeric"
-                        FontSize="22" MaxLength ="20" />
+                        FontSize="22" MaxLength ="20" x:Name="Commission"/>
                     <StackLayout Margin="5,5,5,5" Orientation="Horizontal">
-                        <Button WidthRequest="125" Text="-1000"/>
-                        <Button WidthRequest="125" Text="+1000"/>
+                        <Button WidthRequest="125" Text="-1000" Clicked="OnCommissionMinus100"/>
+                        <Button WidthRequest="125" Text="+1000" Clicked="OnCommissionPlus100"/>
                     </StackLayout>
                 </StackLayout>
                 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                </Grid>
                 
             </StackLayout>
             <BoxView Color="Gray"  HeightRequest="2" HorizontalOptions="Fill" Margin="1" />
-            <Label
-                Text="Hello, World!"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
 
-            <Label
-                Text="Welcome to &#10;.NET Multi-platform App UI"
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
+            <Border Stroke="Gray" BackgroundColor="#e1e1e1">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <VerticalStackLayout>
+                        <Label
+                            Style="{StaticResource SubHeadline}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            Style="{StaticResource SubHeadline}"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Start"
+                            Text="Ставка с НДС" />
+                        <Label
+                            Style="{StaticResource SubHeadline}"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Start"
+                            Text="Ставка без НДС" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+                        <Label
+                            Style="{StaticResource SubHeadline}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            x:Name="NormPriceNDS"
+                            Margin="20,0,0,0"
+                            Style="{StaticResource SubHeadline}"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Start"
+                            Text="**********" />
+                        <Label
+                            x:Name="NormPriceNoNDS"
+                            Margin="20,0,0,0"
+                            Style="{StaticResource SubHeadline}"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Start"
+                            Text="**********" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout>
+                        <Label
+                            Style="{StaticResource SubHeadline}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center" />
+                        <Label
+                            x:Name="MaxPriceNDS"
+                            Margin="20,0,0,0"
+                            Style="{StaticResource SubHeadline}"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Start"
+                            Text="**********" />
+                        <Label
+                            x:Name="MaxPriceNoNDS"
+                            Margin="20,0,0,0"
+                            Style="{StaticResource SubHeadline}"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Start"
+                            Text="**********" />
+                    </VerticalStackLayout>
+                </StackLayout>
+            </Border>
 
             <Button
                 x:Name="CounterBtn"

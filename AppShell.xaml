@@ -5,10 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:LogisticCalcMA"
     Shell.FlyoutBehavior="Disabled"
-    Title="LogisticCalcMA">
+    Title="Расчет ставки">
 
     <ShellContent
-        Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
