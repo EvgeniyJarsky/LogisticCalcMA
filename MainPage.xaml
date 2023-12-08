@@ -17,7 +17,7 @@
             
             <StackLayout>
                 <Button
-                    WidthRequest="500"
+                    WidthRequest="300"
                     x:Name="CounterBtnMain"
                     Text="Рассчитть ставку" 
                     SemanticProperties.Hint="Counts the number of times you click"
@@ -32,21 +32,21 @@
             <StackLayout HorizontalOptions="Center" Orientation="Horizontal" Margin="5,5,5,5">
                 
                 <StackLayout>
-                    <Entry WidthRequest="250" Placeholder = "Ставка" FontFamily="Helvetica" Keyboard="Numeric"
+                    <Entry WidthRequest="150" Placeholder = "Ставка" FontFamily="Helvetica" Keyboard="Numeric"
                         FontSize="22" MaxLength ="20" x:Name="Bet"/>
                     <StackLayout Margin="5,5,5,5" Orientation="Horizontal">
-                        <Button WidthRequest="125" Text="-1000" Clicked="OnBetMinus1000"/>
-                        <Button WidthRequest="125" Text="+1000" Clicked="OnBetPlus1000"/>
+                        <Button WidthRequest="75" Text="-1000" Clicked="OnBetMinus1000"/>
+                        <Button WidthRequest="75" Text="+1000" Clicked="OnBetPlus1000"/>
                     </StackLayout>
                     
                 </StackLayout>
 
                 <StackLayout>
-                    <Entry WidthRequest="250" Placeholder = "Комиссия" FontFamily="Helvetica" Keyboard="Numeric"
+                    <Entry WidthRequest="150" Placeholder = "Комиссия" FontFamily="Helvetica" Keyboard="Numeric"
                         FontSize="22" MaxLength ="20" x:Name="Commission"/>
                     <StackLayout Margin="5,5,5,5" Orientation="Horizontal">
-                        <Button WidthRequest="125" Text="-1000" Clicked="OnCommissionMinus100"/>
-                        <Button WidthRequest="125" Text="+1000" Clicked="OnCommissionPlus100"/>
+                        <Button WidthRequest="75" Text="-1000" Clicked="OnCommissionMinus100"/>
+                        <Button WidthRequest="75" Text="+1000" Clicked="OnCommissionPlus100"/>
                     </StackLayout>
                 </StackLayout>
                 
@@ -62,22 +62,27 @@
                             HorizontalTextAlignment="Center"
                             VerticalTextAlignment="Center" />
                         <Label
+                            FontAttributes="Bold"
                             Style="{StaticResource SubHeadline}"
-                            HorizontalTextAlignment="Start"
+                            HorizontalTextAlignment="End"
                             VerticalTextAlignment="Start"
                             Text="Ставка с НДС" />
                         <Label
+                            FontAttributes="Bold"
                             Style="{StaticResource SubHeadline}"
-                            HorizontalTextAlignment="Start"
+                            HorizontalTextAlignment="End"
                             VerticalTextAlignment="Start"
                             Text="Ставка без НДС" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout>
                         <Label
+                            FontAttributes="Bold"
+                            Margin="20,0,0,0"
                             Style="{StaticResource SubHeadline}"
-                            HorizontalTextAlignment="Center"
-                            VerticalTextAlignment="Center" />
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Start"
+                            Text="Норм."/>
                         <Label
                             x:Name="NormPriceNDS"
                             Margin="20,0,0,0"
@@ -95,9 +100,12 @@
                     </VerticalStackLayout>
                     <VerticalStackLayout>
                         <Label
+                            FontAttributes="Bold"
+                            Margin="20,0,0,0"
                             Style="{StaticResource SubHeadline}"
-                            HorizontalTextAlignment="Center"
-                            VerticalTextAlignment="Center" />
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Start"
+                            Text="Макс."/>
                         <Label
                             x:Name="MaxPriceNDS"
                             Margin="20,0,0,0"
@@ -118,7 +126,7 @@
 
             <Button
                 x:Name="CounterBtn"
-                Text="Click me" 
+                Text="Рассчитать ставку" 
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />

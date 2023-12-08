@@ -1,9 +1,13 @@
-﻿namespace LogisticCalcMA
+﻿using Microsoft.Extensions.Configuration;
+using System;
+using System.Configuration;
+
+namespace LogisticCalcMA
 {
     public partial class MainPage : ContentPage
     {
         int count = 0;
-        LogisticCalcLib.MainModel model = new LogisticCalcLib.MainModel("36000", "1000", true);
+        LogisticCalcLib.MainModel model = new LogisticCalcLib.MainModel("40000", "2000", true);
 
 
         public MainPage()
@@ -12,7 +16,33 @@
 
             Bet.Text = model.Price.ToString();
             Commission.Text = model.RollBack.ToString();
-            //this.WidthRequest = 600;
+
+            #region
+            if (int.TryParse(Bet.Text, out var price))
+            {
+                model.Price = price;
+                if (int.TryParse(Commission.Text, out var rollBack))
+                    model.RollBack = rollBack;
+                else
+                {
+                    DisplayAlert("Внимание!", "Введите корректную комиссию", "OK");
+                    return;
+                }
+            }
+            else
+            {
+                DisplayAlert("Внимание!", "Введите корректную ставку", "OK");
+                return;
+            }
+
+            model.DecreaseBid(0);
+
+            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
+            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
+
+            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
+            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+            #endregion
         }
 
         private void OnBetMinus1000(object sender, EventArgs e)
@@ -78,7 +108,7 @@
                     model.RollBack = rollBack;
                 else
                 {
-                    DisplayAlert("Внимание!", "Введите корректный откат", "OK");
+                    DisplayAlert("Внимание!", "Введите корректную комиссию", "OK");
                     return;
                 }
             }
@@ -97,10 +127,6 @@
             MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
-        {
-
-        }
     }
 
 }
