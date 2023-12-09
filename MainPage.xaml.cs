@@ -6,16 +6,19 @@ namespace LogisticCalcMA
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
         LogisticCalcLib.MainModel model = new LogisticCalcLib.MainModel("40000", "2000", true);
-
+      
 
         public MainPage()
         {
             InitializeComponent();
 
+            model.Reserve = 2000;
+            reserve.Text = model.Reserve.ToString();
+
             Bet.Text = model.Price.ToString();
             Commission.Text = model.RollBack.ToString();
+            
 
             #region
             if (int.TryParse(Bet.Text, out var price))
@@ -89,6 +92,29 @@ namespace LogisticCalcMA
             MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
             MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
         }
+        private void OnReserveMinus1000(object sender, EventArgs e)
+        {
+            model.DecreaseReserve(1000);
+            reserve.Text = model.Reserve.ToString();
+
+            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
+            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
+
+            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
+            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+        }
+        private void OnReservePlus1000(object sender, EventArgs e)
+        {
+            model.IncreaseReserve(1000);
+            reserve.Text = model.Reserve.ToString();
+
+            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
+            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
+
+            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
+            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+        }
+
         private void OnCheckChange(object sender, CheckedChangedEventArgs e)
         {
             model.ChangeRoundUp();
