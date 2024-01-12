@@ -13,6 +13,16 @@ namespace LogisticCalcMA
         {
             InitializeComponent();
 
+            int age = Preferences.Default.Get("age", -1);
+
+            Preferences.Default.Set("age", 43);
+
+            int height = 600;
+            int width = 450;
+            //Window.Width = width;
+            //Window.Height = height;
+
+
             model.Reserve = 2000;
             reserve.Text = model.Reserve.ToString();
 
