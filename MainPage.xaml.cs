@@ -6,29 +6,41 @@ namespace LogisticCalcMA
 {
     public partial class MainPage : ContentPage
     {
+        
         LogisticCalcLib.MainModel model = new LogisticCalcLib.MainModel("40000", "2000", true);
       
 
         public MainPage()
         {
             InitializeComponent();
+            #region Binding
+                Binding bindingBet = new Binding { Source = model, Path = "Price" };
+                Bet.SetBinding (Entry.TextProperty, bindingBet);
 
-            int age = Preferences.Default.Get("age", -1);
+                Binding bindingComission = new Binding { Source = model, Path = "RollBack" };
+                Commission.SetBinding(Entry.TextProperty, bindingComission);
 
-            Preferences.Default.Set("age", 43);
+                Binding bindingReserv = new Binding { Source = model, Path = "Reserve" };
+                reserve.SetBinding (Entry.TextProperty, bindingReserv);
 
-            int height = 600;
-            int width = 450;
-            //Window.Width = width;
-            //Window.Height = height;
+                Binding bindingPriceForATIWithRate = new Binding { Source = model, Path = "PriceForATIWithRate" };
+                NormPriceNDS.SetBinding(Label.TextProperty, bindingPriceForATIWithRate);
 
+                Binding bindingPricengForATIWithOutRate = new Binding { Source = model, Path = "PricengForATIWithOutRate" };
+                NormPriceNoNDS.SetBinding(Label.TextProperty,bindingPricengForATIWithOutRate);
 
-            model.Reserve = 2000;
-            reserve.Text = model.Reserve.ToString();
+                Binding bindingMaxPriceWithRate = new Binding { Source = model, Path = "MaxPriceWithRate" };
+                MaxPriceNDS.SetBinding(Label.TextProperty, bindingMaxPriceWithRate);
 
-            Bet.Text = model.Price.ToString();
-            Commission.Text = model.RollBack.ToString();
-            
+                Binding bindingMaxPriceNoNDS = new Binding { Source = model, Path = "MaxPriceWithOutRate" };
+                MaxPriceNoNDS.SetBinding(Label.TextProperty, bindingMaxPriceNoNDS);
+            #endregion
+
+            model.Price = Preferences.Default.Get("price", 40000);
+            model.RollBack = Preferences.Default.Get("rollBack", 2000);
+            model.Reserve = Preferences.Default.Get("reserv", 2000);
+            model.RoundUp = Preferences.Default.Get("roundUp", false);
+
 
             #region
             if (int.TryParse(Bet.Text, out var price))
@@ -50,90 +62,50 @@ namespace LogisticCalcMA
 
             model.DecreaseBid(0);
 
-            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
-            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
-
-            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
-            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
             #endregion
         }
 
         private void OnBetMinus1000(object sender, EventArgs e)
         {
             model.DecreaseBid(1000);
-            Bet.Text = model.Price.ToString();
+            Preferences.Default.Set("price", model.Price);
 
-            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
-            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
 
-            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
-            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+            model.Price = Preferences.Default.Get("price", 40000);
+            model.RollBack = Preferences.Default.Get("rollBack", 2000);
+            model.Reserve = Preferences.Default.Get("reserv", 2000);
+            model.RoundUp = Preferences.Default.Get("roundUp", false);
         }
         private void OnBetPlus1000(object sender, EventArgs e)
         {
             model.IncreaseBid(1000);
-            Bet.Text = model.Price.ToString();
-
-            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
-            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
-
-            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
-            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+            Preferences.Default.Set("price", model.Price);
         }
         private void OnCommissionMinus100(object sender, EventArgs e)
         {
             model.DecreaseRollBack(1000);
-            Commission.Text = model.RollBack.ToString() ;
-
-            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
-            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
-
-            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
-            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+            Preferences.Default.Set("rollBack", model.RollBack);
         }
         private void OnCommissionPlus100(object sender, EventArgs e)
         {
             model.IncreaseRollBack(1000);
-            Commission.Text = model.RollBack.ToString();
-
-            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
-            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
-
-            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
-            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+            Preferences.Default.Set("rollBack", model.RollBack);
         }
         private void OnReserveMinus1000(object sender, EventArgs e)
         {
             model.DecreaseReserve(1000);
-            reserve.Text = model.Reserve.ToString();
-
-            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
-            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
-
-            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
-            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+            Preferences.Default.Set("reserv", model.Reserve);
         }
         private void OnReservePlus1000(object sender, EventArgs e)
         {
             model.IncreaseReserve(1000);
-            reserve.Text = model.Reserve.ToString();
-
-            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
-            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
-
-            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
-            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+            Preferences.Default.Set("reserv", model.Reserve);
         }
 
         private void OnCheckChange(object sender, CheckedChangedEventArgs e)
         {
             model.ChangeRoundUp();
-
-            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
-            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
-
-            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
-            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+            Preferences.Default.Set("roundUp", model.RoundUp);
         }
         private void OnCounterClicked(object sender, EventArgs e)
         {
@@ -155,12 +127,10 @@ namespace LogisticCalcMA
             }
 
             model.DecreaseBid(0);
-
-            NormPriceNDS.Text = model.PriceForATIWithRate.ToString();
-            NormPriceNoNDS.Text = model.PricengForATIWithOutRate.ToString();
-
-            MaxPriceNDS.Text = model.MaxPriceWithRate.ToString();
-            MaxPriceNoNDS.Text = model.MaxPriceWithOutRate.ToString();
+            Preferences.Default.Set("price", model.Price);
+            Preferences.Default.Set("rollBack", model.RollBack);
+            Preferences.Default.Set("reserv", model.Reserve);
+            Preferences.Default.Set("roundUp", model.RoundUp);
         }
 
     }
