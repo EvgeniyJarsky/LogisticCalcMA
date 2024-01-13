@@ -1,39 +1,35 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Configuration;
-
-namespace LogisticCalcMA
+﻿namespace LogisticCalcMA
 {
     public partial class MainPage : ContentPage
     {
-        
+
         LogisticCalcLib.MainModel model = new LogisticCalcLib.MainModel("40000", "2000", true);
-      
+
 
         public MainPage()
         {
             InitializeComponent();
             #region Binding
-                Binding bindingBet = new Binding { Source = model, Path = "Price" };
-                Bet.SetBinding (Entry.TextProperty, bindingBet);
+            Binding bindingBet = new Binding { Source = model, Path = "Price" };
+            Bet.SetBinding(Entry.TextProperty, bindingBet);
 
-                Binding bindingComission = new Binding { Source = model, Path = "RollBack" };
-                Commission.SetBinding(Entry.TextProperty, bindingComission);
+            Binding bindingComission = new Binding { Source = model, Path = "RollBack" };
+            Commission.SetBinding(Entry.TextProperty, bindingComission);
 
-                Binding bindingReserv = new Binding { Source = model, Path = "Reserve" };
-                reserve.SetBinding (Entry.TextProperty, bindingReserv);
+            Binding bindingReserv = new Binding { Source = model, Path = "Reserve" };
+            reserve.SetBinding(Entry.TextProperty, bindingReserv);
 
-                Binding bindingPriceForATIWithRate = new Binding { Source = model, Path = "PriceForATIWithRate" };
-                NormPriceNDS.SetBinding(Label.TextProperty, bindingPriceForATIWithRate);
+            Binding bindingPriceForATIWithRate = new Binding { Source = model, Path = "PriceForATIWithRate" };
+            NormPriceNDS.SetBinding(Label.TextProperty, bindingPriceForATIWithRate);
 
-                Binding bindingPricengForATIWithOutRate = new Binding { Source = model, Path = "PricengForATIWithOutRate" };
-                NormPriceNoNDS.SetBinding(Label.TextProperty,bindingPricengForATIWithOutRate);
+            Binding bindingPricengForATIWithOutRate = new Binding { Source = model, Path = "PricengForATIWithOutRate" };
+            NormPriceNoNDS.SetBinding(Label.TextProperty, bindingPricengForATIWithOutRate);
 
-                Binding bindingMaxPriceWithRate = new Binding { Source = model, Path = "MaxPriceWithRate" };
-                MaxPriceNDS.SetBinding(Label.TextProperty, bindingMaxPriceWithRate);
+            Binding bindingMaxPriceWithRate = new Binding { Source = model, Path = "MaxPriceWithRate" };
+            MaxPriceNDS.SetBinding(Label.TextProperty, bindingMaxPriceWithRate);
 
-                Binding bindingMaxPriceNoNDS = new Binding { Source = model, Path = "MaxPriceWithOutRate" };
-                MaxPriceNoNDS.SetBinding(Label.TextProperty, bindingMaxPriceNoNDS);
+            Binding bindingMaxPriceNoNDS = new Binding { Source = model, Path = "MaxPriceWithOutRate" };
+            MaxPriceNoNDS.SetBinding(Label.TextProperty, bindingMaxPriceNoNDS);
             #endregion
 
             model.Price = Preferences.Default.Get("price", 40000);
@@ -41,7 +37,23 @@ namespace LogisticCalcMA
             model.Reserve = Preferences.Default.Get("reserv", 2000);
             model.RoundUp = Preferences.Default.Get("roundUp", false);
 
+            TapGestureRecognizer tapNormPriceNDS = new TapGestureRecognizer();
+            TapGestureRecognizer tapNormPriceNoNDS = new TapGestureRecognizer();
+            TapGestureRecognizer tapMaxPriceNDS = new TapGestureRecognizer();
+            TapGestureRecognizer tapMaxPriceNoNDS = new TapGestureRecognizer();
+            tapNormPriceNDS.NumberOfTapsRequired = 1;
 
+            NormPriceNDS.GestureRecognizers.Add(tapNormPriceNDS);
+            tapNormPriceNDS.Tapped += TapNormPriceNDS_Tapped;
+
+            NormPriceNoNDS.GestureRecognizers.Add(tapNormPriceNoNDS);
+            tapNormPriceNoNDS.Tapped += TapNormPriceNoNDS_Tapped;
+
+            MaxPriceNDS.GestureRecognizers.Add(tapMaxPriceNDS);
+            tapMaxPriceNDS.Tapped += TapMaxPriceNDS_Tapped;
+
+            MaxPriceNoNDS.GestureRecognizers.Add(tapMaxPriceNoNDS);
+            tapMaxPriceNoNDS.Tapped += TapMaxPriceNoNDS_Tapped;
             #region
             if (int.TryParse(Bet.Text, out var price))
             {
@@ -63,6 +75,56 @@ namespace LogisticCalcMA
             model.DecreaseBid(0);
 
             #endregion
+        }
+        /// <summary>
+        /// Вычисляем прибыль
+        /// </summary>
+        /// <param name="bet">Ставка заказчика</param>
+        /// <param name="comission">Комиссия</param>
+        /// <param name="betToTruck">Ставка для перевозчика</param>
+        /// <param name="withNDS">С НДС или без</param>
+        /// <returns></returns>
+        private string ProfitWithNDS(int betToTruck, bool withNDS)
+        {
+            string profitStr = String.Empty;
+            double profit = 0;
+
+            if (withNDS) 
+            {
+                profit = (model.Price - betToTruck)*0.2;
+                profitStr = Math.Round(profit, 0).ToString();
+            }
+            else
+            {
+                profit = ((model.Price / 1.2) - betToTruck) * 0.2;
+                profitStr = Math.Round(profit, 0).ToString();
+
+            }
+            return profitStr;
+        }
+
+        private void TapMaxPriceNoNDS_Tapped(object? sender, TappedEventArgs e)
+        {
+            DisplayAlert("Доход!", ProfitWithNDS(model.MaxPriceWithOutRate, false), "OK");
+            //throw new NotImplementedException();
+        }
+
+        private void TapMaxPriceNDS_Tapped(object? sender, TappedEventArgs e)
+        {
+            DisplayAlert("Доход!", ProfitWithNDS(model.MaxPriceWithRate, true), "OK");
+            //throw new NotImplementedException();
+        }
+
+        private void TapNormPriceNoNDS_Tapped(object? sender, TappedEventArgs e)
+        {
+            DisplayAlert("Доход!", ProfitWithNDS(model.PricengForATIWithOutRate, false), "OK");
+            //throw new NotImplementedException();
+        }
+
+        private void TapNormPriceNDS_Tapped(object? sender, TappedEventArgs e)
+        {
+            DisplayAlert("Доход!", ProfitWithNDS(model.PriceForATIWithRate, true), "OK");
+            //throw new NotImplementedException();
         }
 
         private void OnBetMinus1000(object sender, EventArgs e)
@@ -133,6 +195,8 @@ namespace LogisticCalcMA
             Preferences.Default.Set("roundUp", model.RoundUp);
         }
 
+
+        
     }
 
 }
